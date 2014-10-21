@@ -1,0 +1,4 @@
+# APP generated files #
+######################
+/composer.lock
+/vendor

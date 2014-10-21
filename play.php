@@ -1,3 +1,11 @@
+<?php
+	require 'vendor/bootstrap.php';
+	$result = dibi::query('SELECT * FROM items');
+	$all = $result->fetchAll();
+	foreach ($all as $key) {
+		var_dump($key['title']);
+	}
+?>
 <!DOCTYPE html>
 <html>
     <head>
