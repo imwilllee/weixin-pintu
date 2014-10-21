@@ -33,12 +33,19 @@
         -->
         <div class="overcast"></div>
     </div>
-    <a href="http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd" class="overBtn share">关注我们</a>
+    <a href="http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd" class="overBtn share">关注公众号</a>
     <div class="progress"  id="progress"></div>
     <div style="display:none"></div>
     <script src="assets/js/zepto.min.js"></script>
     <script type="text/javascript" src="assets/js/webuploader/webuploader.custom.js"></script>
     <script>
+        var inputTitle = function() {
+            var title = prompt('亲，给游戏起个贴切的名字吧！O(∩_∩)O', '');
+            if (title == '' || title.length > 20) {
+                inputTitle();
+            }
+            return title;
+        }
         var $host = location.protocol + '//' + location.host;
         var $uploader = WebUploader.create({
             auto: true,
@@ -64,7 +71,7 @@
         });
         // 文件上传进度
         $uploader.on('uploadProgress', function(file, percentage) {
-             $('#progress').html('图片上传中，进度:' + parseInt(percentage) * 100 + '%');
+             $('#progress').html('上传已完成:' + parseInt(percentage) * 100 + '%');
         });
         // 文件上传出错
         $uploader.on('uploadError', function(file, reason) {
@@ -75,7 +82,23 @@
             if(response.err_code != 0) {
                 alert(response.err_msg);
             } else {
-                $('#progress').html('上传成功，正在生成游戏...');
+                $('#progress').html('');
+                var $title = inputTitle();
+                $.post(
+                  'update_item.php',
+                  {
+                    id: response.item_id,
+                    title: $title
+                  },
+                  function(rs){
+                    if (rs.err_code == 0) {
+                        location.href = $host + '/' + response.item_id + '.html';
+                    } else {
+                        alert('数据保存错误！');
+                    }
+                  },
+                  'json'
+                );
             }
         });
         $uploader.on('error', function(type){

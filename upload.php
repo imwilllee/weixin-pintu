@@ -30,9 +30,9 @@
 				'original_file_path' => SAVE_PATH . $file['save_name'],
 				'small_file_path' => SAVE_PATH . 's_' . $file['save_name']
 			);
-			if ($id = dibi::query('INSERT INTO items', $data)) {
+			if (dibi::query('INSERT INTO items', $data)) {
 				$response['err_code'] = 0;
-				$response['item_id'] = $id;
+				$response['item_id'] = dibi::getInsertId();
 			} else {
 				$response['err_msg'] = '数据保存失败！';
 			}
@@ -42,19 +42,18 @@
 	}
 	echo json_encode($response);
 
-	function size_format( $bytes, $decimals = 0 ) {
+	function size_format($bytes, $decimals = 0) {
 		$quant = array(
-			// ========================= Origin ====
-			'TB' => 1099511627776,  // pow( 1024, 4)
-			'GB' => 1073741824,     // pow( 1024, 3)
-			'MB' => 1048576,        // pow( 1024, 2)
-			'kB' => 1024,           // pow( 1024, 1)
-			'B ' => 1,              // pow( 1024, 0)
+			'TB' => 1099511627776,
+			'GB' => 1073741824,
+			'MB' => 1048576,
+			'kB' => 1024,
+			'B ' => 1
 		);
-		foreach ( $quant as $unit => $mag )
-			if ( doubleval($bytes) >= $mag )
-				return number_format( $bytes / $mag, $decimals ) . ' ' . $unit;
-
+		foreach ($quant as $unit => $mag)
+			if (doubleval($bytes) >= $mag) {
+				return number_format($bytes / $mag, $decimals) . ' ' . $unit;
+			}
 		return false;
 	}
 
