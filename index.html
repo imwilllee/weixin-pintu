@@ -136,7 +136,12 @@
         });
         // 文件上传进度
         $uploader.on('uploadProgress', function(file, percentage) {
-            $('#msg').html('上传已完成:' + parseInt(percentage) * 100 + '%');
+            var jd = parseInt(percentage) * 100;
+            if (jd < 100) {
+              $('#msg').html('上传已完成:' + jd + '%');
+            } else {
+              $('#msg').html('图片上传成功，游戏制作中...');
+            }
         });
         // 文件上传出错
         $uploader.on('uploadError', function(file, reason) {
@@ -144,7 +149,6 @@
         });
         // 文件上传成功
         $uploader.on('uploadSuccess', function(file, response) {
-            $('#msg').html('图片上传成功，游戏制作中...');
             if(response.err_code != 0) {
                 showMsg(response.err_msg);
             } else {
