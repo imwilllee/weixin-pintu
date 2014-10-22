@@ -1,4 +1,7 @@
 # APP generated files #
 ######################
 /composer.lock
-#/vendor
+/vendor
+/uploads
+/logs
+/data
