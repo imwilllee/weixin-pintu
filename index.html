@@ -12,6 +12,26 @@
         <style type="text/css">
             .drag-box{background-image:url(assets/images/upload.png);z-index:500;margin-bottom:0;}.play-container{margin-bottom:0;}.overcast{width:312px;height:312px;position:relative;background-color:#000;z-index:500;opacity:1;display:none;margin:0 auto;}.progress{position:absolute;top:50px;left:50px;font-size:20px;}.webuploader-container{position:relative;}.webuploader-element-invisible{position:absolute!important;clip:rect(1px,1px,1px,1px);}.webuploader-pick{height:312px;}.webuploader-pick-hover{background:#00a2d4;}.webuploader-pick-disable{opacity:0.6;pointer-events:none;}.count-down,.masker,.load{display:none;}
         </style>
+    <style>
+      .sbg {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 22px;
+        line-height: 1.7em;
+        background: rgba(0,0,0,0.85);
+        z-index: 200;
+      }
+      .sbg p {
+        padding-top: 78px;
+      }
+
+    </style>
     </head>
     <body>
     <h1 class="game-title"></h1>
@@ -36,6 +56,10 @@
     <a href="http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd" class="overBtn share">关注公众号</a>
     <div class="progress"  id="progress"></div>
     <div style="display:none"></div>
+    <div id="locked" class="sbg">
+      <div class="arron"></div>
+      <p id="msg">图片上传中,请不要关闭程序。</p>
+    </div>
     <script src="assets/js/zepto.min.js"></script>
     <script type="text/javascript" src="assets/js/webuploader/webuploader.custom.js"></script>
     <script>
@@ -46,6 +70,25 @@
             }
             return title;
         }
+        var lockWindow = function(msg) {
+          $('#msg').html(msg);
+          $('#locked').show();
+        }
+        var showMsg = function(msg) {
+          $('#msg').html(msg);
+          $('#locked').show();
+          setTimeout(
+            function(){
+              hideMsg();
+            },
+            2000
+          );
+        }
+        var hideMsg = function() {
+          $('#msg').html('');
+          $('#locked').hide();
+        }
+        var uploadMaxSize = 5 * 1024 * 1024;
         var $host = location.protocol + '//' + location.host;
         var $uploader = WebUploader.create({
             auto: true,
@@ -60,47 +103,51 @@
                 mimeTypes: 'image/*'
             },
             thumb: false,
-            compress: {
-                width: 3200,
-                height: 3200,
-                // 图片质量，只有type为`image/jpeg`的时候才有效。
-                quality: 90,
-                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
-                allowMagnify: false,
-                // 是否允许裁剪。
-                crop: false,
-                // 是否保留头部meta信息。
-                preserveHeaders: true,
-                // 如果发现压缩后文件大小比原来还大，则使用原来图片
-                // 此属性可能会影响图片自动纠正功能
-                noCompressIfLarger: false,
-                // 单位字节，如果图片大小小于此值，不会采用压缩。
-                compressSize: 2 * 1024 * 1024
-            },
+            compress: false,
+            // compress: {
+            //     width: 3200,
+            //     height: 3200,
+            //     // 图片质量，只有type为`image/jpeg`的时候才有效。
+            //     quality: 90,
+            //     // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+            //     allowMagnify: false,
+            //     // 是否允许裁剪。
+            //     crop: false,
+            //     // 是否保留头部meta信息。
+            //     preserveHeaders: true,
+            //     // 如果发现压缩后文件大小比原来还大，则使用原来图片
+            //     // 此属性可能会影响图片自动纠正功能
+            //     noCompressIfLarger: false,
+            //     // 单位字节，如果图片大小小于此值，不会采用压缩。
+            //     compressSize: 2 * 1024 * 1024
+            // },
             threads: 1,
             formData: {}
         });
         $uploader.on('beforeFileQueued', function(file){
-          $('#progress').html('图片准备上传...');
+          if (file.size > uploadMaxSize) {
+            showMsg('(%>_<%) 您选择的图片尺寸太大啦,换张小点的吧。');
+            return false;
+          }
         });
         // 选择上传文件加入列队后
-        $uploader.on('fileQueued', function(file){
-            $('#progress').html('图片开始上传中...');
+        $uploader.on('uploadStart', function(file){
+            lockWindow('图片上传中...');
         });
         // 文件上传进度
         $uploader.on('uploadProgress', function(file, percentage) {
-             $('#progress').html('上传已完成:' + parseInt(percentage) * 100 + '%');
+            $('#msg').html('上传已完成:' + parseInt(percentage) * 100 + '%');
         });
         // 文件上传出错
         $uploader.on('uploadError', function(file, reason) {
-             alert('图片上传出错！code:' + reason);
+            showMsg('图片上传出错！code:' + reason);
         });
         // 文件上传成功
         $uploader.on('uploadSuccess', function(file, response) {
+            $('#msg').html('图片上传成功，游戏制作中...');
             if(response.err_code != 0) {
-                alert(response.err_msg);
+                showMsg(response.err_msg);
             } else {
-                $('#progress').html('');
                 var $title = inputTitle();
                 $.post(
                   'update_item.php',
@@ -112,7 +159,7 @@
                     if (rs.err_code == 0) {
                         location.href = $host + '/' + response.item_id + '.html';
                     } else {
-                        alert('数据保存错误！');
+                        showMsg('数据保存错误！');
                     }
                   },
                   'json'
@@ -120,7 +167,7 @@
             }
         });
         $uploader.on('error', function(type){
-            alert('error: ' + type );
+            showMsg('error: ' + type );
         });
     </script>
   </body>

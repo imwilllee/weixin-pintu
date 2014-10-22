@@ -186,7 +186,7 @@ class Uploader {
 			return false;
 		}
 		// 上传文件扩展名检查
-		$this->_file['extension'] = strtolower(pathinfo($this->_file['name'], PATHINFO_EXTENSION));
+		$this->_file['extension'] = $this->__getFileExt();
 
 		if ($this->_config['allow_exts'] !== 'all') {
 			if (is_string($this->_config['allow_exts'])) {
@@ -212,11 +212,11 @@ class Uploader {
  */
 	private function __checkFileMimeType() {
 		// 如果开启了php_fileinfo扩展
-		if (function_exists('finfo_file')) {
-			$finfo = finfo_open(FILEINFO_MIME_TYPE);
-			$this->_file['type'] = finfo_file($finfo, $this->_file['tmp_name']);
-			finfo_close($finfo);
-		}
+		// if (function_exists('finfo_file')) {
+		// 	$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		// 	$this->_file['type'] = finfo_file($finfo, $this->_file['tmp_name']);
+		// 	finfo_close($finfo);
+		// }
 		if (!isset($this->_allowedMime[$this->_file['extension']])) {
 			return false;
 		}
@@ -225,6 +225,28 @@ class Uploader {
 			return false;
 		}
 		return true;
+	}
+
+/**
+ * 获取上传文件扩展名
+ *
+ * @return string
+ */
+	private function __getFileExt() {
+		// 上传文件扩展名检查
+		$ext = strtolower(pathinfo($this->_file['name'], PATHINFO_EXTENSION));
+		// 直接获取不到扩展名(微信安卓浏览器BUG)
+		if (empty($ext)) {
+			$mime = strtolower($this->_file['type']);
+			foreach ($this->_allowedMime as $key => $mimeList) {
+				if (in_array($mime, $mimeList)) {
+					$ext = $key;
+					break;
+				}
+			}
+			$this->_file['name'] = $this->_file['name'] . '.' . $ext;
+		}
+		return $ext;
 	}
 
 /**

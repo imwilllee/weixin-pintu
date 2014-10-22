@@ -133,7 +133,7 @@
 			</div>
 		</script>
 
-		<div id="sbg" class="sbg" onClick="document.getElementById('sbg').style.display = 'none';">
+		<div id="sbg" class="sbg">
 			<div class="arron"></div>
 			<p id="msg">请点击右上角按钮<br />再点击【分享到朋友圈】<br />  喊他们来挑战吧！</p>
 		</div>
@@ -171,6 +171,10 @@
 						},
 						500
 					);
+				});
+
+				$('#sbg').on('click', function(){
+					$('#sbg').hide();
 				});
 
 				$('#madeBtn').on('click', function(){
