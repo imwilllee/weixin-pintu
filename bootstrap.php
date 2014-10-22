@@ -8,8 +8,8 @@
 	define('UPLOAD_SIZE', 5 * 1024 * 1024);
 
 	// 缩略图像素
-	define('IMAGE_WIDTH', 300);
-	define('IMAGE_HEIGHT', 300);
+	define('IMAGE_WIDTH', 640);
+	define('IMAGE_HEIGHT', 640);
 
 	require WWW_ROOT . 'vendor' . DS . 'autoload.php';
 

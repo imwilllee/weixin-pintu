@@ -40,9 +40,9 @@
     <script type="text/javascript" src="assets/js/webuploader/webuploader.custom.js"></script>
     <script>
         var inputTitle = function() {
-            var title = prompt('亲，给游戏起个贴切的名字吧！O(∩_∩)O', '');
-            if (title == '' || title.length > 20) {
-                inputTitle();
+            var title = prompt('亲，给游戏起个名字吧(不能太长哦)！O(∩_∩)O', '');
+            if (title == null || title == '' || title.length > 20) {
+                return inputTitle();
             }
             return title;
         }
@@ -60,14 +60,32 @@
                 mimeTypes: 'image/*'
             },
             thumb: false,
-            compress: false,
+            compress: {
+                width: 3200,
+                height: 3200,
+                // 图片质量，只有type为`image/jpeg`的时候才有效。
+                quality: 90,
+                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+                allowMagnify: false,
+                // 是否允许裁剪。
+                crop: false,
+                // 是否保留头部meta信息。
+                preserveHeaders: true,
+                // 如果发现压缩后文件大小比原来还大，则使用原来图片
+                // 此属性可能会影响图片自动纠正功能
+                noCompressIfLarger: false,
+                // 单位字节，如果图片大小小于此值，不会采用压缩。
+                compressSize: 2 * 1024 * 1024
+            },
             threads: 1,
             formData: {}
         });
-
-        // 选择上传文件后
+        $uploader.on('beforeFileQueued', function(file){
+          $('#progress').html('图片准备上传...');
+        });
+        // 选择上传文件加入列队后
         $uploader.on('fileQueued', function(file){
-            $('#progress').html('图片准备上传中...');
+            $('#progress').html('图片开始上传中...');
         });
         // 文件上传进度
         $uploader.on('uploadProgress', function(file, percentage) {

@@ -4,7 +4,7 @@
 		exit();
 	}
 	require 'bootstrap.php';
-	$result = dibi::query('SELECT title,small_file_path FROM items where [id] = %i %lmt', $_GET['id'], 1);
+	$result = dibi::query('SELECT title,original_file_path,small_file_path FROM items where [id] = %i %lmt', $_GET['id'], 1);
 	$row = $result->fetch();
 	if (empty($row)) {
 		header('location: index.html');
