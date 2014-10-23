@@ -217,13 +217,13 @@ class Uploader {
 		// 	$this->_file['type'] = finfo_file($finfo, $this->_file['tmp_name']);
 		// 	finfo_close($finfo);
 		// }
-		if (!isset($this->_allowedMime[$this->_file['extension']])) {
-			return false;
-		}
-		$this->_file['type'] = strtolower($this->_file['type']);
-		if (!in_array($this->_file['type'], $this->_allowedMime[$this->_file['extension']])) {
-			return false;
-		}
+		// if (!isset($this->_allowedMime[$this->_file['extension']])) {
+		// 	return false;
+		// }
+		// $this->_file['type'] = strtolower($this->_file['type']);
+		// if (!in_array($this->_file['type'], $this->_allowedMime[$this->_file['extension']])) {
+		// 	return false;
+		// }
 		return true;
 	}
 
