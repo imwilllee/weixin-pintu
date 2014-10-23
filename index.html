@@ -12,6 +12,21 @@
         <style type="text/css">
             .drag-box{background-image:url(assets/images/upload.png);z-index:500;margin-bottom:0;}.play-container{margin-bottom:0;}.overcast{width:312px;height:312px;position:relative;background-color:#000;z-index:500;opacity:1;display:none;margin:0 auto;}.progress{position:absolute;top:50px;left:50px;font-size:20px;}.webuploader-container{position:relative;}.webuploader-element-invisible{position:absolute!important;clip:rect(1px,1px,1px,1px);}.webuploader-pick{height:312px;}.webuploader-pick-hover{background:#00a2d4;}.webuploader-pick-disable{opacity:0.6;pointer-events:none;}.count-down,.masker,.load{display:none;}
             .sbg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:22px;line-height:1.7em;background:rgba(0,0,0,0.85);z-index:200;}.sbg p{padding-top:78px;}
+              #fileupload {
+                height: 100%;
+                cursor: pointer;
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                font-size: 100px;
+                z-index: 2;
+
+                opacity: 0.0; /* Standard: FF gt 1.5, Opera, Safari */
+                filter: alpha(opacity=0); /* IE lt 8 */
+                -ms-filter: "alpha(opacity=0)"; /* IE 8 */
+                -khtml-opacity: 0.0; /* Safari 1.x */
+                -moz-opacity: 0.0; /* FF lt 1.5, Netscape */
+              }
         </style>
     </head>
     <body>
@@ -19,8 +34,8 @@
     <div class="drag-content">
         <div class="play-container" id="upload-container">
             <div class="drag-box"></div>
+            <input id="fileupload" type="file" name="file" accept="image/*">
         </div>
-        <input id="fileupload" type="file" name="file" accept="image/*" style="display:none;">
         <!--
         <br>
         <div class="timer">
@@ -78,18 +93,14 @@
         var $host = location.protocol + '//' + location.host;
 
         $(function(){
-            $('#upload-container').on('click', function(e){
-                e.preventDefault();
-                $('#fileupload').trigger('click');
-            });
             $('#fileupload').fileupload({
                 url: $host + '/upload.php',
                 autoUpload: true
             }).bind('fileuploadadd', function(e, data) {
-                if (/image\/\w+/.test(data.files[0].type) == false) {
-                    showMsg('只允许上传图片哦。');
-                    return false;
-                }
+                // if (/image\/\w+/.test(data.files[0].type) == false) {
+                //     showMsg('只允许上传图片哦。');
+                //     return false;
+                // }
                 if (data.files[0].size > uploadMaxSize) {
                     showMsg('(%>_<%) 您选择的图片尺寸太大啦,换张小点的吧。');
                     return false;
@@ -106,7 +117,6 @@
             }).bind('fileuploaddone', function(e, data){
                 hideMsg();
                 if (data.textStatus == 'success') {
-                  console.log(data);
                   if (data.result.err_code != 0) {
                     showMsg(data.result.err_msg);
                   } else {
