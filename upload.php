@@ -2,6 +2,7 @@
 	if (empty($_FILES['file'])) {
 		exit('error');
 	}
+	set_time_limit(60);
 	require 'bootstrap.php';
 	use Intervention\Image\ImageManagerStatic as Image;
 
@@ -15,7 +16,6 @@
 		'allow_exts' => array('jpg', 'jpeg', 'gif', 'png'),
 		'max_size' => UPLOAD_SIZE
 	);
-
 	$uploader = new Uploader();
 	$uploader->setConfig($config);
 	if ($file = $uploader->upload($_FILES['file'])) {

@@ -1,4 +1,7 @@
 <?php
+	ini_set('display_errors', 'Off');
+	error_reporting(0);
+
 	define('DS', DIRECTORY_SEPARATOR);
 	define('WWW_ROOT', __DIR__ . DS);
 	// 上传路径

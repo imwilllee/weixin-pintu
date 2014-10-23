@@ -93,13 +93,20 @@
                 }
                 lockWindow('图片上传中，请不要关闭应用。');
                 return true;
+            }).bind('fileuploadprogress', function(e, data){
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                if (progress < 100) {
+                  $('#msg').html('已完成:' + progress + '%');
+                } else {
+                  $('#msg').html('图片上传成功，游戏制作中...');
+                }
             }).bind('fileuploaddone', function(e, data){
                 hideMsg();
                 if (data.textStatus == 'success') {
+                  console.log(data);
                   if (data.result.err_code != 0) {
                     showMsg(data.result.err_msg);
                   } else {
-                    lockWindow('图片上传成功，游戏制作中...');
                     var $title = inputTitle();
                     $.post(
                       'update_item.php',
@@ -120,6 +127,8 @@
                 } else {
                   showMsg('(%>_<%) 上传发生了错误。');
                 }
+            }).bind('fileuploadfail', function(e, data) {
+              showMsg('(%>_<%) 上传发生了错误。');
             });
         });
     </script>
