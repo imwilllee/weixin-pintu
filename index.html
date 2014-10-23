@@ -46,6 +46,9 @@
     <script type="text/javascript" src="assets/js/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="assets/js/jquery.fileupload.js"></script>
     <script>
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+          WeixinJSBridge.call('hideOptionMenu');
+        });
         var inputTitle = function() {
             var title = prompt('亲，给游戏起个名字吧(不能太长哦)！O(∩_∩)O', '');
             if (title == null || title == '' || title.length > 20) {
