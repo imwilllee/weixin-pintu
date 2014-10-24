@@ -2,7 +2,7 @@
 	if (empty($_FILES['file'])) {
 		exit('error');
 	}
-	set_time_limit(60);
+	set_time_limit(120);
 	require 'bootstrap.php';
 	use Intervention\Image\ImageManagerStatic as Image;
 
