@@ -20,80 +20,50 @@
                 right: 0px;
                 font-size: 100px;
                 z-index: 2;
-
-                opacity: 0.0; /* Standard: FF gt 1.5, Opera, Safari */
-                filter: alpha(opacity=0); /* IE lt 8 */
-                -ms-filter: "alpha(opacity=0)"; /* IE 8 */
-                -khtml-opacity: 0.0; /* Safari 1.x */
-                -moz-opacity: 0.0; /* FF lt 1.5, Netscape */
+                opacity: 0.0;
+                filter: alpha(opacity=0);
+                -ms-filter: "alpha(opacity=0)";
+                -khtml-opacity: 0.0;
+                -moz-opacity: 0.0;
               }
         </style>
-    </head>
-    <body>
-    <h1 class="game-title"></h1>
-    <div class="drag-content">
-        <div class="play-container" id="upload-container">
-            <div class="drag-box"></div>
-            <input id="fileupload" type="file" name="file" accept="image/*">
-        </div>
-        <!--
-        <br>
-        <div class="timer">
-            <div class="timer-con">
-                <div class="step-con">
-                    <img class="step-con" src="assets/images/step.png" width="20" height="20">
-                </div>
-
-                <span id="counter" class="t counter">0&nbsp;步</span>
-            </div>
-        </div>
-        -->
-        <div class="overcast"></div>
-    </div>
-    <a href="http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd" class="overBtn share">关注公众号</a>
-    <div class="progress"  id="progress"></div>
-    <div style="display:none"></div>
-    <div id="locked" class="sbg">
-      <div class="arron"></div>
-      <p id="msg">图片上传中,请不要关闭程序。</p>
-    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="assets/js/jquery.fileupload.js"></script>
     <script>
-        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-          WeixinJSBridge.call('hideOptionMenu');
-        });
-        var inputTitle = function() {
-            var title = prompt('亲，给游戏起个名字吧(不能太长哦)！O(∩_∩)O', '');
-            if (title == null || title == '' || title.length > 20) {
-                return inputTitle();
+        $(document).ready(function () {
+            $("#fileupload").attr("accept", "image/*");
+            // document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            //   WeixinJSBridge.call('hideOptionMenu');
+            // });
+            var inputTitle = function() {
+                var title = prompt('亲，给游戏起个名字吧(不能太长哦)！O(∩_∩)O', '');
+                if (title == null || title == '' || title.length > 20) {
+                    return inputTitle();
+                }
+                return title;
             }
-            return title;
-        }
-        var lockWindow = function(msg) {
-          $('#msg').html(msg);
-          $('#locked').show();
-        }
-        var showMsg = function(msg) {
-          $('#msg').html(msg);
-          $('#locked').show();
-          setTimeout(
-            function(){
-              hideMsg();
-            },
-            2500
-          );
-        }
-        var hideMsg = function() {
-          $('#msg').html('');
-          $('#locked').hide();
-        }
-        var uploadMaxSize = 5 * 1024 * 1024;
-        var $host = location.protocol + '//' + location.host;
-
-        $(function(){
-            $('#fileupload').fileupload({
+            var lockWindow = function(msg) {
+              $('#msg').html(msg);
+              $('#locked').show();
+            }
+            var showMsg = function(msg) {
+              $('#msg').html(msg);
+              $('#locked').show();
+              setTimeout(
+                function(){
+                  hideMsg();
+                },
+                2500
+              );
+            }
+            var hideMsg = function() {
+              $('#msg').html('');
+              $('#locked').hide();
+            }
+            var uploadMaxSize = 5 * 1024 * 1024;
+            var $host = location.protocol + '//' + location.host;
+            $('#upload-form').fileupload({
                 url: $host + '/upload.php',
                 autoUpload: true
             }).bind('fileuploadadd', function(e, data) {
@@ -143,7 +113,38 @@
             }).bind('fileuploadfail', function(e, data) {
               showMsg('(%>_<%) 上传发生了错误。');
             });
+            $('#upload-form').show();
         });
     </script>
+    </head>
+    <body>
+    <form action="upload.php" id="upload-form" data-ajax="false" method="post" accept-charset="utf-8" enctype="multipart/form-data" >
+    <div class="drag-content">
+        <div class="play-container" id="upload-container">
+            <div class="drag-box"></div>
+            <input id="fileupload" type="file" name="file" accept="image/*">
+        </div>
+        <!--
+        <br>
+        <div class="timer">
+            <div class="timer-con">
+                <div class="step-con">
+                    <img class="step-con" src="assets/images/step.png" width="20" height="20">
+                </div>
+
+                <span id="counter" class="t counter">0&nbsp;步</span>
+            </div>
+        </div>
+        -->
+        <div class="overcast"></div>
+    </div>
+    </form>
+    <a href="http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd" class="overBtn share">关注公众号</a>
+    <div class="progress"  id="progress"></div>
+    <div style="display:none"></div>
+    <div id="locked" class="sbg">
+      <div class="arron"></div>
+      <p id="msg">图片上传中,请不要关闭程序。</p>
+    </div>
   </body>
 </html>
