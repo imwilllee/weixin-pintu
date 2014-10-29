@@ -137,73 +137,75 @@
 			<div class="arron"></div>
 			<p id="msg">请点击右上角按钮<br />再点击【分享到朋友圈】<br />  喊他们来挑战吧！</p>
 		</div>
+		<div class="ad"></div>
 		<script type="text/template" style="display:none;" id="jigsawLayoutTemplate">
 			<% for(var i = 0 ; i < list.length;i++){%>
 				<div class="item" sort="<%=list[i].sort%>" dragitem='1' style="width:<%=list[i].w%>px;height:<%=list[i].h%>px;background:url(<%=img%>) no-repeat;background-position:<%=list[i].x%>px <%=list[i].y%>px;background-size:<%=width%>px <%=height%>px;"></div>
 			<%}%>
 		</script>
-		<script src="assets/js/zepto.min.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
 		<script src="assets/js/common.js"></script>
 		<script src="assets/js/index.min.js"></script>
 		<script src="assets/js/wxtools.js"></script>
 
-		<div style="display:none">
-			<script type="text/javascript">
-				var gameTitle = "<?php echo htmlspecialchars($row['title']); ?>";
-				var dataForWeixin = {
-					appId : "",
-					MsgImg : people_img,
-					TLImg:people_img,
-					shareurl : 'http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>',
-					title : '我定制了“' + gameTitle + '”看你用几步能得到完整的TA',
-					desc : '定制好友拼图\n-来自《私属小游戏》',
-					before_share : function() {
-					},
-					callback : function() {
-						$('#sbg').hide();
-					}
-				};
-
-				$('#shareBtn').on('click', function(){
-					setTimeout(
-						function(){
-							$('#sbg').show();
-						},
-						500
-					);
-				});
-
-				$('#sbg').on('click', function(){
+		<script type="text/javascript">
+			var gameTitle = "<?php echo htmlspecialchars($row['title']); ?>";
+			var dataForWeixin = {
+				appId : "",
+				MsgImg : people_img,
+				TLImg:people_img,
+				shareurl : 'http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>',
+				title : '我定制了“' + gameTitle + '”看你用几步能得到完整的TA',
+				desc : '定制好友拼图\n-来自《私属小游戏》',
+				before_share : function() {
+				},
+				callback : function() {
 					$('#sbg').hide();
-				});
-
-				$('#madeBtn').on('click', function(){
-					alert('关注后，您可以定制只属于你自己的好友拼图，点击确认立即关注');
-					location.href='http://mp.weixin.qq.com/s?__biz=MzA4ODUwMzYzMw==&mid=212923715&idx=1&sn=652d50922e2d630366e46a8cf3c9b72a#rd';
-				});
-
-				function gameover(){
-					var over1 = '', over2 = '';
-					if(step < 10){
-						over1 = '哇，骚年，你好厉害啊';
-						over2 = '你只用了' + step + '步就完成了';
-					} else{
-						over1 = '哎，你弱爆了';
-						over2 = '你用了' + step + '步才完成拼图';
-					}
-					$('#h1').html(over1);
-					$('#h2').html(over2);
-					$('#menuBox').show();
 				}
+			};
 
-				$('#makegame').on('click', function(){
-					location.href="index.html";
-				});
+			$('#shareBtn').on('click', function(){
+				setTimeout(
+					function(){
+						$('#sbg').show();
+					},
+					500
+				);
+			});
 
-				$('#reload').on('click', function(){
-					location.reload();
-				});
-			</script>
-		</div>
+			$('#sbg').on('click', function(){
+				$('#sbg').hide();
+			});
+
+			$('#madeBtn').on('click', function(){
+				alert('关注后，您可以定制只属于你自己的好友拼图，点击确认立即关注');
+				location.href='http://mp.weixin.qq.com/s?__biz=MzA4ODUwMzYzMw==&mid=212923715&idx=1&sn=652d50922e2d630366e46a8cf3c9b72a#rd';
+			});
+
+			function gameover(){
+				var over1 = '', over2 = '';
+				if(step < 10){
+					over1 = '哇，骚年，你好厉害啊';
+					over2 = '你只用了' + step + '步就完成了';
+				} else{
+					over1 = '哎，你弱爆了';
+					over2 = '你用了' + step + '步才完成拼图';
+				}
+				$('#h1').html(over1);
+				$('#h2').html(over2);
+				$('#menuBox').show();
+			}
+
+			$('#makegame').on('click', function(){
+				location.href="index.html";
+			});
+
+			$('#reload').on('click', function(){
+				location.reload();
+			});
+			$(document).ready(function(){
+				$.getScript('assets/js/ad.js');
+			});
+		</script>
 	</body>
 </html>

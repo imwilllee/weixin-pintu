@@ -114,6 +114,7 @@
               showMsg('(%>_<%) 上传发生了错误。');
             });
             $('#upload-form').show();
+            $.getScript('assets/js/ad.js');
         });
     </script>
     </head>
@@ -145,6 +146,9 @@
     <div id="locked" class="sbg">
       <div class="arron"></div>
       <p id="msg">图片上传中,请不要关闭程序。</p>
+    </div>
+    <div class="ad">
+
     </div>
   </body>
 </html>
