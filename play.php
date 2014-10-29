@@ -179,7 +179,7 @@
 
 				$('#madeBtn').on('click', function(){
 					alert('关注后，您可以定制只属于你自己的好友拼图，点击确认立即关注');
-					location.href='http://mp.weixin.qq.com/s?__biz=MzA5Mzg2NzUxNg==&mid=200796041&idx=1&sn=9126d254aa5e22979720579c1841010b#rd';
+					location.href='http://mp.weixin.qq.com/s?__biz=MzA4ODUwMzYzMw==&mid=212923715&idx=1&sn=652d50922e2d630366e46a8cf3c9b72a#rd';
 				});
 
 				function gameover(){
