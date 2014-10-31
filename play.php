@@ -63,6 +63,9 @@
 				text-align: center;
 				overflow: hidden;
 			}
+			.game-title {
+				color:#000;
+			}
 		</style>
 	</head>
 	<body>
