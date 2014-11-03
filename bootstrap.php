@@ -24,7 +24,7 @@
 	}
 	set_error_handler("onError");
 	function wlog($obj, $type = 'debug') {
-		$file = WWW_ROOT . 'logs' .DS .sprintf('%s.log', $type);
+		$file = WWW_ROOT . 'data' . DS . 'logs' .DS . sprintf('%s.log', $type);
 		file_put_contents($file, date('Y-m-d H:i:s') . "\r\n", FILE_APPEND);
 		file_put_contents($file, var_export($obj, true), FILE_APPEND);
 		file_put_contents($file, "\r\n", FILE_APPEND);
