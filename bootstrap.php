@@ -1,6 +1,10 @@
 <?php
 	ini_set('display_errors', 'Off');
 	error_reporting(0);
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') == false ) {
+		header('HTTP/1.1 403 Forbidden');
+		exit('HTTP/1.1 403 Forbidden');
+	}
 
 	define('DS', DIRECTORY_SEPARATOR);
 	define('WWW_ROOT', __DIR__ . DS);
@@ -38,7 +42,7 @@
 				'host' => '127.0.0.1',
 				'username' => 'root',
 				'password' => '',
-				'database' => 'pintu'
+				'database' => 'test'
 			)
 		);
 	} catch (DibiException $e) {
