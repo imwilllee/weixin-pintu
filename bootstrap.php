@@ -34,14 +34,14 @@
 	try {
 		dibi::connect(
 			array(
-				'driver' => 'sqlite3',
-				'database' => WWW_ROOT . 'data' . DS . 'db.s3db.db',
-				//'password' => 'QAZWSX741236985'
+				'driver' => 'mysql',
+				'host' => '127.0.0.1',
+				'username' => 'root',
+				'password' => '',
+				'database' => 'pintu'
 			)
 		);
-
 	} catch (DibiException $e) {
-		echo get_class($e), ': ', $e->getMessage(), "\n";
+		wlog($e->getMessage());
+		exit('server error');
 	}
-
-
