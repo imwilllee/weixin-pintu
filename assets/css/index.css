@@ -13,6 +13,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 body {
 	line-height: 1;
 	background-color: #FAFAD2;
+	background:url("../images/bg.jpg") repeat fixed!important;
 }
 
 ol,ul {
